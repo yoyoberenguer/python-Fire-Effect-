@@ -27,7 +27,7 @@ and a C-compiler are correctly install on your system.
 ```
 ## DEMO
 ```
-Edit the file test_lights.py in your favorite python IDE and run it 
+Edit the file fire_demo.py in your favorite python IDE and run it 
 Or run fire_demo.py 
 
 ```
