@@ -20,7 +20,7 @@ Old school fire effect with Python/Cython
 ## BUILDING PROJECT:
 ```
 In a command prompt and under the directory containing the source files
-C:\>python setup_lights.py build_ext --inplace
+C:\>python setup_project.py build_ext --inplace
 
 If the compilation fail, refers to the requirement section and make sure cython 
 and a C-compiler are correctly install on your system. 
