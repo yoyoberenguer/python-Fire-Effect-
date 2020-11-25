@@ -91,6 +91,8 @@ if __name__ == '__main__':
     fire = numpy.zeros((height, width), dtype=numpy.float32)
     empty_x2 = pygame.Surface((width, height)).convert()
 
+    fire_sound = pygame.mixer.Sound("fire7s.wav")
+    fire_sound.play(-1)
     while not STOP_GAME:
 
         # SCREEN.fill((58, 57, 57, 0))
