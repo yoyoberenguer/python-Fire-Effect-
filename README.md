@@ -6,6 +6,8 @@ Compatible with pygame version 2.0
 
 ## REQUIREMENT:
 ```
+pip install pygame cython numpy==1.19.3
+
 - python > 3.0
 - numpy version 1.9.13
 - pygame 
