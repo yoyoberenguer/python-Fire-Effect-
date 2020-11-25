@@ -6,7 +6,7 @@ Old school fire effect with Python/Cython
 ## REQUIREMENT:
 ```
 - python > 3.0
-- numpy arrays
+- numpy version 1.9.13
 - pygame 
 - Cython
 - A compiler such visual studio, MSVC, CGYWIN setup correctly
