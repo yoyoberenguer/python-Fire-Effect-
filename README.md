@@ -1,5 +1,6 @@
 # python-Fire-Effect-
 Old school fire effect with Python/Cython
+Compatible with pygame version 2.0
 
 ![alt text](https://github.com/yoyoberenguer/python-Fire-Effect-/blob/main/screenshot101.png)
 
