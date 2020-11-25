@@ -38,6 +38,7 @@ try:
 except ImportError:
     raise ImportError("\n<hsl> library is missing on your system or hsl.pyx is not cynthonized.")
 
+
 from libc.stdio cimport printf
 from libc.stdlib cimport srand, rand, RAND_MAX, qsort, malloc, free, abs
 
@@ -52,10 +53,16 @@ DEF SCHEDULE = 'static'
 DEF ONE_360  = 1.0 / 360.0
 DEF ONE_255  = 1.0 / 255.0
 
+cdef extern from 'randnumber.c':
+
+    float randRangeFloat(float lower, float upper)nogil
+    int randRange(int lower, int upper)nogil
+
 cdef struct rgb_:
         double r
         double g
         double b
+
 ctypedef rgb_ rgb
 
 @cython.boundscheck(False)
@@ -407,3 +414,50 @@ cpdef fire_texture32(int width, int height, int frame, float factor, pal, mask):
         list_.append(surface)
     return list_
 
+
+
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.nonecheck(False)
+@cython.cdivision(True)
+cpdef fire_surface24(int width, int height, float factor, pal, mask, float [:, ::1] fire):
+
+    cdef:
+        # float [:, ::1] fire = zeros((height, width), dtype=float32)
+        # flame opacity palette
+        unsigned int [:, :, ::1] out = zeros((height, width, 3), dtype=uint32)
+        unsigned int [::1] palette = pal
+        # mask to use, ideally a black and white
+        # texture transform into a 2d array shapes (w, h)
+        # black pixel will cancel the flame effect.
+        unsigned char [:, :] mask_ = mask
+        int x = 0, y = 0, i = 0, f
+        float d
+        unsigned int *color
+
+    with nogil:
+        for x in prange(width):
+                fire[height - 1, x] = randRange(1, 255)
+
+    with nogil:
+        for y in prange(0, height - 1):
+            for x in range(0, width - 1):
+                if mask_[x, y] != 0:
+                    d = (fire[(y + 1) % height, (x - 1 + width) % width]
+                                   + fire[(y + 1) % height, x % width]
+                                   + fire[(y + 1) % height, (x + 1) % width]
+                                   + fire[(y + 2) % height, x % width]) / factor
+                    d -= rand() * 0.0001
+                    if d > 255.0:
+                        d = 255.0
+                    if d < 0:
+                        d = 0
+                    fire[y, x] = d
+                    color = int_to_rgb(palette[<unsigned int>d])
+                    out[y, x, 0], out[y, x, 1], out[y, x, 2] = \
+                        <unsigned char>color[0], <unsigned char>color[1], <unsigned char>color[2]
+                else:
+                    out[y, x, 0], out[y, x, 1], out[y, x, 2] = 0, 0, 0
+
+    return pygame.image.frombuffer(asarray(out, dtype=uint8), (width, height), 'RGB').convert(), fire

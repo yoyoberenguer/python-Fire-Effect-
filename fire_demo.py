@@ -18,7 +18,7 @@ except ImportError:
                       "\nTry: \n   C:\\pip install platform on a window command prompt.")
 
 try:
-    from FireEffect import make_palette, fire_texture24
+    from FireEffect import make_palette, fire_texture24, fire_surface24
 except ImportError:
     raise ImportError("\n<FireEffect> library is missing on your system or FireEffect.pyx is not cynthonized.")
 
@@ -27,7 +27,7 @@ height = 400
 width_2 = width // 2
 height_2 = height // 2
 # GENERATE THE SAMPLING FOR HALF WIDTH & HEIGHT TO SPEED UP THE PROCESS
-palette, surf = make_palette(width_2, height_2 - 150, 4, 60, 1.5)
+palette, surf = make_palette(width_2, height_2 - 150, 4, 60, 1.7)
 mask = numpy.full((width_2, height_2), 255, dtype=numpy.uint8)
 buff = fire_texture24(width_2, height_2, 500, 3.95, palette, mask)
 # ADJUST THE SURFACE (SMOOTHSCALE) TO WINDOW SIZE
@@ -81,16 +81,26 @@ if __name__ == '__main__':
     # It is best to not always grab the input, since it prevents the user from doing other things on their system.
     pygame.event.clear()
 
-    N = 150
+    width = 800
+    height = 400
+    width_2 = width // 2
+    height_2 = height // 2
+    # GENERATE THE SAMPLING FOR HALF WIDTH & HEIGHT TO SPEED UP THE PROCESS
+    palette, surf = make_palette(width_2, height_2 - 150, 4.0, 110, 1.5)
+    mask = numpy.full((width_2, height_2), 255, dtype=numpy.uint8)
+    fire = numpy.zeros((height, width), dtype=numpy.float32)
+    empty_x2 = pygame.Surface((width, height)).convert()
+
     while not STOP_GAME:
 
-        SCREEN.fill((58, 57, 57, 0))
+        # SCREEN.fill((58, 57, 57, 0))
         pygame.event.pump()
         for event in pygame.event.get():
 
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_F8]:
+                pygame.display.flip()
                 pygame.image.save(SCREEN, 'screenshot' + str(FRAME) + '.png')
 
             elif event.type == pygame.QUIT:
@@ -100,11 +110,11 @@ if __name__ == '__main__':
             if keys[pygame.K_ESCAPE]:
                 STOP_GAME = True
 
-        SCREEN.blit(buff[N % len(buff) - 1], (0, 0))
+        s, o = fire_surface24(width_2, height_2, 3.95, palette, mask, fire)
+        pygame.transform.scale2x(s, empty_x2)
+        SCREEN.blit(empty_x2, (0, 0))
+        fire = o
 
-        N += 1
-        if N > len(buff) -1:
-            N = 150
         CLOCK.tick(60)
 
         pygame.display.flip()
