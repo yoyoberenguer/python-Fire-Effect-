@@ -4,6 +4,12 @@ Compatible with pygame version 2.0
 
 ![alt text](https://github.com/yoyoberenguer/python-Fire-Effect-/blob/main/screenshot101.png)
 
+
+## New version
+```
+Install the program using RippleEffect.exe
+```
+
 ## REQUIREMENT:
 ```
 pip install pygame cython numpy==1.19.3
