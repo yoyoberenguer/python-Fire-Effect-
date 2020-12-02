@@ -7,7 +7,7 @@ Compatible with pygame version 2.0
 
 ## New version
 ```
-Install the program using RippleEffect.exe
+Install the program using FireEffect.exe
 ```
 
 ## REQUIREMENT:
