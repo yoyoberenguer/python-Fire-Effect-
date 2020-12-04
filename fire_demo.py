@@ -1,8 +1,24 @@
+
+# COMPILATION
+# python setup_project.py build_ext --inplace
+
+# INSTALLER
+# pyinstaller --onefile fire_demo.spec
+
+# Ver 1.0.2
+
+__version__ = "1.0.2"
+
 try:
     import pygame
 except ImportError:
     raise ImportError("\npygame library is missing on your system."
                       "\nTry: \n   C:\\pip inatall pygame on a window command prompt.")
+
+from pygame.display import flip, set_caption
+from pygame.pixelcopy import array_to_surface
+from pygame.transform import scale2x
+
 try:
     import numpy
 except ImportError:
@@ -18,23 +34,32 @@ except ImportError:
                       "\nTry: \n   C:\\pip install platform on a window command prompt.")
 
 try:
-    from FireEffect import make_palette, fire_texture24, fire_surface24
+    from FireEffect import make_palette, fire_texture24, fire_surface24, fire_texture32
 except ImportError:
     raise ImportError("\n<FireEffect> library is missing on your system or FireEffect.pyx is not cynthonized.")
 
+try:
+    from rand import randrange, randrangefloat
+except ImportError:
+    raise ImportError("\n<rand> library is missing on your system or rand.pyx is not cynthonized.")
+
 width = 800
 height = 400
-width_2 = width // 2
-height_2 = height // 2
-# GENERATE THE SAMPLING FOR HALF WIDTH & HEIGHT TO SPEED UP THE PROCESS
-palette, surf = make_palette(width_2, height_2 - 150, 4, 60, 1.7)
-mask = numpy.full((width_2, height_2), 255, dtype=numpy.uint8)
-buff = fire_texture24(width_2, height_2, 500, 3.95, palette, mask)
-# ADJUST THE SURFACE (SMOOTHSCALE) TO WINDOW SIZE
-i = 0
-for image in buff:
-    buff[i] = pygame.transform.smoothscale(image, (width, height))
-    i += 1
+
+# BELOW TESTING FOR METHOD fire_texture32
+# width_2 = width // 2
+# height_2 = height // 2
+# # GENERATE THE SAMPLING FOR HALF WIDTH & HEIGHT TO SPEED UP THE PROCESS
+#
+# palette, surf = make_palette(width_2, height_2 - 150, 0.1, 60, 1.7)
+# mask = numpy.full((width_2, height_2), 255, dtype=numpy.uint8)
+# buff = fire_texture32(width_2, height_2, 500, 3.95, palette)
+# # ADJUST THE SURFACE (SMOOTHSCALE) TO WINDOW SIZE
+# i = 0
+# for image in buff:
+#     buff[i] = pygame.transform.smoothscale(image, (width, height))
+#     i += 1
+
 
 if __name__ == '__main__':
 
@@ -51,7 +76,9 @@ if __name__ == '__main__':
         except:
             raise Exception('\nCannot initialized pygame video mode!')
 
-    pygame.display.set_caption("JOYSTICK TESTER")
+    SCREEN.set_alpha(None)
+
+    pygame.display.set_caption("Fire Demo")
 
     print('Driver          : ', pygame.display.get_driver())
     print(pygame.display.Info())
@@ -85,24 +112,80 @@ if __name__ == '__main__':
     height = 400
     width_2 = width // 2
     height_2 = height // 2
+
     # GENERATE THE SAMPLING FOR HALF WIDTH & HEIGHT TO SPEED UP THE PROCESS
-    palette, surf = make_palette(width_2, height_2 - 150, 4.0, 110, 1.5)
+    hue = 3.9
+    saturation = 93.4
+    luminescence = 1.2
+    palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
+
     mask = numpy.full((width_2, height_2), 255, dtype=numpy.uint8)
     fire = numpy.zeros((height, width), dtype=numpy.float32)
-    empty_x2 = pygame.Surface((width, height)).convert()
+    fire_surface_small = pygame.Surface((width_2, height_2)).convert(32, pygame.RLEACCEL)
+    fire_surface_x2    = pygame.Surface((width, height)).convert(32, pygame.RLEACCEL)
 
-    fire_sound = pygame.mixer.Sound("fire7s.wav")
+    fire_sound = pygame.mixer.Sound("firepit.wav")
     fire_sound.play(-1)
+
+    # TWEAKS
+    screen_blit = SCREEN.blit
+    clock_tick  = CLOCK.tick
+    cget_fps    = CLOCK.get_fps
+    event_pump  = pygame.event.pump
+    event_get   = pygame.event.get
+    get_key     = pygame.key.get_pressed
+
+    factor = 1.0/3.95
+
     while not STOP_GAME:
 
         # SCREEN.fill((58, 57, 57, 0))
-        pygame.event.pump()
-        for event in pygame.event.get():
+        event_pump()
+        keys = get_key()
 
-            keys = pygame.key.get_pressed()
+        # SATURATION +
+        if keys[pygame.K_KP_PLUS]:
+            saturation += 0.1
+            if saturation > 100.0:
+                saturation = 100.0
+            palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
+        # SATURATION -
+        if keys[pygame.K_KP_MINUS]:
+            saturation -= 0.1
+            if saturation < 0.0:
+                saturation = 0.0
+            palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
+
+        for event in event_get():
+
+            # LUMINESCENCE +
+            if keys[pygame.K_LEFT]:
+                luminescence += 0.1
+                if luminescence > 2.0:
+                    luminescence = 2.0
+                palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
+            # LUMINESCENCE -
+            if keys[pygame.K_RIGHT]:
+                luminescence -= 0.1
+                if luminescence < 0.0:
+                    luminescence = 0.0
+                palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
+
+            # HUE SHIFT +
+            if keys[pygame.K_UP]:
+                hue += 0.1
+                if hue > 100.0:
+                    hue = 100.0
+                palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
+            # HUE SHIFT -
+            if keys[pygame.K_DOWN]:
+                hue -= 0.1
+                if hue < 0.0:
+                    hue = 0.0
+                palette, surf = make_palette(width_2, height_2 - 150, hue, saturation, luminescence)
 
             if keys[pygame.K_F8]:
-                pygame.display.flip()
+                flip()
                 pygame.image.save(SCREEN, 'screenshot' + str(FRAME) + '.png')
 
             elif event.type == pygame.QUIT:
@@ -112,14 +195,21 @@ if __name__ == '__main__':
             if keys[pygame.K_ESCAPE]:
                 STOP_GAME = True
 
-        s, o = fire_surface24(width_2, height_2, 3.95, palette, mask, fire)
-        pygame.transform.scale2x(s, empty_x2)
-        SCREEN.blit(empty_x2, (0, 0))
-        fire = o
+        palette, surf = make_palette(width_2, height_2 + randrange(-150, 150), hue, saturation, luminescence)
+        surface_, array_ = fire_surface24(width_2, height_2, factor + randrangefloat(-0.002, 0.002), palette, fire)
 
-        CLOCK.tick(60)
+        array_to_surface(fire_surface_small, surface_)
 
-        pygame.display.flip()
+        scale2x(fire_surface_small, fire_surface_x2)
+
+        screen_blit(fire_surface_x2, (0, 0))
+        fire = array_
+
+        clock_tick(800)
+        set_caption("Fire Demo (H :%s  S :%s   L :%s)  FPS %s " %
+                    (round(hue, 2), round(saturation, 2), round(luminescence, 2), round(cget_fps(), 2)))
+
+        flip()
         FRAME += 1
 
     pygame.quit()

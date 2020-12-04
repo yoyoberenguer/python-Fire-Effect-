@@ -5,9 +5,8 @@ try:
     cimport cython
     from cython.parallel cimport prange
 except ImportError:
-    print("\n<cython> library is missing on your system."
+    raise("\n<cython> library is missing on your system."
           "\nTry: \n   C:\\pip install cython on a window command prompt.")
-    raise SystemExit
 
 from libc.stdlib cimport srand, rand, RAND_MAX, qsort, malloc, free
 from libc.math cimport fabs, fmod
@@ -31,6 +30,12 @@ cdef extern from 'hsl_c.c' nogil:
         double g
         double b
 
+    struct rgba:
+        double r
+        double g
+        double b
+        double a
+
     # METHOD WITH POINTER
     double * rgb_to_hsl(double r, double g, double b)nogil;
     double * hsl_to_rgb(double h, double s, double l)nogil;
@@ -43,6 +48,7 @@ cdef extern from 'hsl_c.c' nogil:
 
 ctypedef hsl HSL
 ctypedef rgb RGB
+ctypedef rgba RGBA
 
 # -------------------------------------- INTERFACE ------------------------------------------
 

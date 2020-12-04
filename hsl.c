@@ -605,10 +605,10 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__hsl
 #define __PYX_HAVE_API__hsl
 /* Early includes */
+#include "hsl_c.c"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include "hsl_c.c"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -822,23 +822,32 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 
-/* "hsl.pyx":44
+/* "hsl.pyx":49
  *     double fmin_rgb_value(double red, double green, double blue)nogil;
  * 
  * ctypedef hsl HSL             # <<<<<<<<<<<<<<
  * ctypedef rgb RGB
- * 
+ * ctypedef rgba RGBA
  */
 typedef struct hsl __pyx_t_3hsl_HSL;
 
-/* "hsl.pyx":45
+/* "hsl.pyx":50
  * 
  * ctypedef hsl HSL
  * ctypedef rgb RGB             # <<<<<<<<<<<<<<
+ * ctypedef rgba RGBA
+ * 
+ */
+typedef struct rgb __pyx_t_3hsl_RGB;
+
+/* "hsl.pyx":51
+ * ctypedef hsl HSL
+ * ctypedef rgb RGB
+ * ctypedef rgba RGBA             # <<<<<<<<<<<<<<
  * 
  * # -------------------------------------- INTERFACE ------------------------------------------
  */
-typedef struct rgb __pyx_t_3hsl_RGB;
+typedef struct rgba __pyx_t_3hsl_RGBA;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1017,16 +1026,6 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
-/* Print.proto */
-static int __Pyx_Print(PyObject*, PyObject *, int);
-#if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
-static PyObject* __pyx_print = 0;
-static PyObject* __pyx_print_kwargs = 0;
-#endif
-
-/* PrintOne.proto */
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
-
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
@@ -1052,6 +1051,9 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
+/* FunctionExport.proto */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
@@ -1065,14 +1067,14 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'libc.math' */
 
 /* Module declarations from 'hsl' */
+static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double, double, double); /*proto*/
+static double *__pyx_f_3hsl_hsl2rgb_c(double, double, double); /*proto*/
 static PyObject *__pyx_f_3hsl_hsl2rgb(double, double, double, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_3hsl_rgb2hsl(double, double, double, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double, double, double, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double, double, double, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_3hsl_struct_rgb_to_hsl_c(double, double, double, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_3hsl_struct_hsl_to_rgb_c(double, double, double, int __pyx_skip_dispatch); /*proto*/
-static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double, double, double); /*proto*/
-static double *__pyx_f_3hsl_hsl2rgb_c(double, double, double); /*proto*/
 static double __pyx_f_3hsl__v(double, double, double); /*proto*/
 #define __Pyx_MODULE_NAME "hsl"
 extern int __pyx_module_is_main_hsl;
@@ -1080,34 +1082,25 @@ int __pyx_module_is_main_hsl = 0;
 
 /* Implementation of 'hsl' */
 static PyObject *__pyx_builtin_ImportError;
-static PyObject *__pyx_builtin_SystemExit;
 static const char __pyx_k_b[] = "b";
 static const char __pyx_k_g[] = "g";
 static const char __pyx_k_h[] = "h";
 static const char __pyx_k_l[] = "l";
 static const char __pyx_k_r[] = "r";
 static const char __pyx_k_s[] = "s";
-static const char __pyx_k_end[] = "end";
-static const char __pyx_k_file[] = "file";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_print[] = "print";
-static const char __pyx_k_SystemExit[] = "SystemExit";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_n_s_ImportError;
-static PyObject *__pyx_n_s_SystemExit;
 static PyObject *__pyx_n_s_b;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_end;
-static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_g;
 static PyObject *__pyx_n_s_h;
 static PyObject *__pyx_n_s_l;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_r;
 static PyObject *__pyx_n_s_s;
 static PyObject *__pyx_n_s_test;
@@ -1119,7 +1112,7 @@ static PyObject *__pyx_pf_3hsl_8struct_rgb_to_hsl_c(CYTHON_UNUSED PyObject *__py
 static PyObject *__pyx_pf_3hsl_10struct_hsl_to_rgb_c(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_h, double __pyx_v_s, double __pyx_v_l); /* proto */
 /* Late includes */
 
-/* "hsl.pyx":54
+/* "hsl.pyx":60
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef hsl2rgb(double h, double s, double l):             # <<<<<<<<<<<<<<
@@ -1147,7 +1140,7 @@ static PyObject *__pyx_f_3hsl_hsl2rgb(double __pyx_v_h, double __pyx_v_s, double
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("hsl2rgb", 0);
 
-  /* "hsl.pyx":58
+  /* "hsl.pyx":64
  *         double *rgb
  *         double r, g, b
  *     rgb = hsl2rgb_c(h, s, l)             # <<<<<<<<<<<<<<
@@ -1156,7 +1149,7 @@ static PyObject *__pyx_f_3hsl_hsl2rgb(double __pyx_v_h, double __pyx_v_s, double
  */
   __pyx_v_rgb = __pyx_f_3hsl_hsl2rgb_c(__pyx_v_h, __pyx_v_s, __pyx_v_l);
 
-  /* "hsl.pyx":59
+  /* "hsl.pyx":65
  *         double r, g, b
  *     rgb = hsl2rgb_c(h, s, l)
  *     r, g, b = rgb[0], rgb[1], rgb[2]             # <<<<<<<<<<<<<<
@@ -1170,7 +1163,7 @@ static PyObject *__pyx_f_3hsl_hsl2rgb(double __pyx_v_h, double __pyx_v_s, double
   __pyx_v_g = __pyx_t_2;
   __pyx_v_b = __pyx_t_3;
 
-  /* "hsl.pyx":60
+  /* "hsl.pyx":66
  *     rgb = hsl2rgb_c(h, s, l)
  *     r, g, b = rgb[0], rgb[1], rgb[2]
  *     free(rgb)             # <<<<<<<<<<<<<<
@@ -1179,7 +1172,7 @@ static PyObject *__pyx_f_3hsl_hsl2rgb(double __pyx_v_h, double __pyx_v_s, double
  */
   free(__pyx_v_rgb);
 
-  /* "hsl.pyx":61
+  /* "hsl.pyx":67
  *     r, g, b = rgb[0], rgb[1], rgb[2]
  *     free(rgb)
  *     return r, g, b             # <<<<<<<<<<<<<<
@@ -1187,13 +1180,13 @@ static PyObject *__pyx_f_3hsl_hsl2rgb(double __pyx_v_h, double __pyx_v_s, double
  * # METHOD CYTHON (USING POINTER)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_g); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_g); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -1208,7 +1201,7 @@ static PyObject *__pyx_f_3hsl_hsl2rgb(double __pyx_v_h, double __pyx_v_s, double
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "hsl.pyx":54
+  /* "hsl.pyx":60
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef hsl2rgb(double h, double s, double l):             # <<<<<<<<<<<<<<
@@ -1267,17 +1260,17 @@ static PyObject *__pyx_pw_3hsl_1hsl2rgb(PyObject *__pyx_self, PyObject *__pyx_ar
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_s)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("hsl2rgb", 1, 3, 3, 1); __PYX_ERR(0, 54, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("hsl2rgb", 1, 3, 3, 1); __PYX_ERR(0, 60, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_l)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("hsl2rgb", 1, 3, 3, 2); __PYX_ERR(0, 54, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("hsl2rgb", 1, 3, 3, 2); __PYX_ERR(0, 60, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "hsl2rgb") < 0)) __PYX_ERR(0, 54, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "hsl2rgb") < 0)) __PYX_ERR(0, 60, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1286,13 +1279,13 @@ static PyObject *__pyx_pw_3hsl_1hsl2rgb(PyObject *__pyx_self, PyObject *__pyx_ar
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_h = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_h == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L3_error)
-    __pyx_v_s = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_s == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L3_error)
-    __pyx_v_l = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L3_error)
+    __pyx_v_h = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_h == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
+    __pyx_v_s = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_s == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
+    __pyx_v_l = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("hsl2rgb", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 54, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("hsl2rgb", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 60, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hsl.hsl2rgb", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1314,7 +1307,7 @@ static PyObject *__pyx_pf_3hsl_hsl2rgb(CYTHON_UNUSED PyObject *__pyx_self, doubl
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("hsl2rgb", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hsl_hsl2rgb(__pyx_v_h, __pyx_v_s, __pyx_v_l, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hsl_hsl2rgb(__pyx_v_h, __pyx_v_s, __pyx_v_l, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1331,7 +1324,7 @@ static PyObject *__pyx_pf_3hsl_hsl2rgb(CYTHON_UNUSED PyObject *__pyx_self, doubl
   return __pyx_r;
 }
 
-/* "hsl.pyx":68
+/* "hsl.pyx":74
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef rgb2hsl(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -1359,7 +1352,7 @@ static PyObject *__pyx_f_3hsl_rgb2hsl(double __pyx_v_r, double __pyx_v_g, double
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rgb2hsl", 0);
 
-  /* "hsl.pyx":72
+  /* "hsl.pyx":78
  *         double *hsl
  *         double h, s, l
  *     hsl = rgb2hsl_c(r, g, b)             # <<<<<<<<<<<<<<
@@ -1368,7 +1361,7 @@ static PyObject *__pyx_f_3hsl_rgb2hsl(double __pyx_v_r, double __pyx_v_g, double
  */
   __pyx_v_hsl = __pyx_f_3hsl_rgb2hsl_c(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
-  /* "hsl.pyx":73
+  /* "hsl.pyx":79
  *         double h, s, l
  *     hsl = rgb2hsl_c(r, g, b)
  *     h, s, l = hsl[0], hsl[1], hsl[2]             # <<<<<<<<<<<<<<
@@ -1382,7 +1375,7 @@ static PyObject *__pyx_f_3hsl_rgb2hsl(double __pyx_v_r, double __pyx_v_g, double
   __pyx_v_s = __pyx_t_2;
   __pyx_v_l = __pyx_t_3;
 
-  /* "hsl.pyx":74
+  /* "hsl.pyx":80
  *     hsl = rgb2hsl_c(r, g, b)
  *     h, s, l = hsl[0], hsl[1], hsl[2]
  *     free(hsl)             # <<<<<<<<<<<<<<
@@ -1391,7 +1384,7 @@ static PyObject *__pyx_f_3hsl_rgb2hsl(double __pyx_v_r, double __pyx_v_g, double
  */
   free(__pyx_v_hsl);
 
-  /* "hsl.pyx":75
+  /* "hsl.pyx":81
  *     h, s, l = hsl[0], hsl[1], hsl[2]
  *     free(hsl)
  *     return h, s, l             # <<<<<<<<<<<<<<
@@ -1399,13 +1392,13 @@ static PyObject *__pyx_f_3hsl_rgb2hsl(double __pyx_v_r, double __pyx_v_g, double
  * # HOOK FOR THE C VERSION (USING POINTER)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_h); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_h); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_s); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_s); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_l); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_l); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -1420,7 +1413,7 @@ static PyObject *__pyx_f_3hsl_rgb2hsl(double __pyx_v_r, double __pyx_v_g, double
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "hsl.pyx":68
+  /* "hsl.pyx":74
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef rgb2hsl(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -1479,17 +1472,17 @@ static PyObject *__pyx_pw_3hsl_3rgb2hsl(PyObject *__pyx_self, PyObject *__pyx_ar
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_g)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rgb2hsl", 1, 3, 3, 1); __PYX_ERR(0, 68, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rgb2hsl", 1, 3, 3, 1); __PYX_ERR(0, 74, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rgb2hsl", 1, 3, 3, 2); __PYX_ERR(0, 68, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rgb2hsl", 1, 3, 3, 2); __PYX_ERR(0, 74, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rgb2hsl") < 0)) __PYX_ERR(0, 68, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rgb2hsl") < 0)) __PYX_ERR(0, 74, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1498,13 +1491,13 @@ static PyObject *__pyx_pw_3hsl_3rgb2hsl(PyObject *__pyx_self, PyObject *__pyx_ar
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
-    __pyx_v_g = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_g == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
-    __pyx_v_b = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_b == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
+    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
+    __pyx_v_g = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_g == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
+    __pyx_v_b = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_b == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("rgb2hsl", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 68, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("rgb2hsl", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 74, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hsl.rgb2hsl", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1526,7 +1519,7 @@ static PyObject *__pyx_pf_3hsl_2rgb2hsl(CYTHON_UNUSED PyObject *__pyx_self, doub
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rgb2hsl", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hsl_rgb2hsl(__pyx_v_r, __pyx_v_g, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hsl_rgb2hsl(__pyx_v_r, __pyx_v_g, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1543,7 +1536,7 @@ static PyObject *__pyx_pf_3hsl_2rgb2hsl(CYTHON_UNUSED PyObject *__pyx_self, doub
   return __pyx_r;
 }
 
-/* "hsl.pyx":82
+/* "hsl.pyx":88
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef hsl_to_rgb_c(double h, double s, double l):             # <<<<<<<<<<<<<<
@@ -1571,7 +1564,7 @@ static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double __pyx_v_h, double __pyx_v_s, d
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("hsl_to_rgb_c", 0);
 
-  /* "hsl.pyx":86
+  /* "hsl.pyx":92
  *         double *rgb
  *         double r, g, b
  *     rgb = hsl_to_rgb(h, s, l)             # <<<<<<<<<<<<<<
@@ -1580,7 +1573,7 @@ static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double __pyx_v_h, double __pyx_v_s, d
  */
   __pyx_v_rgb = hsl_to_rgb(__pyx_v_h, __pyx_v_s, __pyx_v_l);
 
-  /* "hsl.pyx":87
+  /* "hsl.pyx":93
  *         double r, g, b
  *     rgb = hsl_to_rgb(h, s, l)
  *     r, g, b = rgb[0], rgb[1], rgb[2]             # <<<<<<<<<<<<<<
@@ -1594,7 +1587,7 @@ static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double __pyx_v_h, double __pyx_v_s, d
   __pyx_v_g = __pyx_t_2;
   __pyx_v_b = __pyx_t_3;
 
-  /* "hsl.pyx":88
+  /* "hsl.pyx":94
  *     rgb = hsl_to_rgb(h, s, l)
  *     r, g, b = rgb[0], rgb[1], rgb[2]
  *     free(rgb)             # <<<<<<<<<<<<<<
@@ -1603,7 +1596,7 @@ static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double __pyx_v_h, double __pyx_v_s, d
  */
   free(__pyx_v_rgb);
 
-  /* "hsl.pyx":89
+  /* "hsl.pyx":95
  *     r, g, b = rgb[0], rgb[1], rgb[2]
  *     free(rgb)
  *     return r, g, b             # <<<<<<<<<<<<<<
@@ -1611,13 +1604,13 @@ static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double __pyx_v_h, double __pyx_v_s, d
  * # HOOK FOR THE C VERSION (USING POINTER)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_g); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_g); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -1632,7 +1625,7 @@ static PyObject *__pyx_f_3hsl_hsl_to_rgb_c(double __pyx_v_h, double __pyx_v_s, d
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "hsl.pyx":82
+  /* "hsl.pyx":88
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef hsl_to_rgb_c(double h, double s, double l):             # <<<<<<<<<<<<<<
@@ -1691,17 +1684,17 @@ static PyObject *__pyx_pw_3hsl_5hsl_to_rgb_c(PyObject *__pyx_self, PyObject *__p
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_s)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("hsl_to_rgb_c", 1, 3, 3, 1); __PYX_ERR(0, 82, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("hsl_to_rgb_c", 1, 3, 3, 1); __PYX_ERR(0, 88, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_l)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("hsl_to_rgb_c", 1, 3, 3, 2); __PYX_ERR(0, 82, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("hsl_to_rgb_c", 1, 3, 3, 2); __PYX_ERR(0, 88, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "hsl_to_rgb_c") < 0)) __PYX_ERR(0, 82, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "hsl_to_rgb_c") < 0)) __PYX_ERR(0, 88, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1710,13 +1703,13 @@ static PyObject *__pyx_pw_3hsl_5hsl_to_rgb_c(PyObject *__pyx_self, PyObject *__p
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_h = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_h == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L3_error)
-    __pyx_v_s = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_s == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L3_error)
-    __pyx_v_l = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L3_error)
+    __pyx_v_h = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_h == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+    __pyx_v_s = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_s == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+    __pyx_v_l = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("hsl_to_rgb_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 82, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("hsl_to_rgb_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 88, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hsl.hsl_to_rgb_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1738,7 +1731,7 @@ static PyObject *__pyx_pf_3hsl_4hsl_to_rgb_c(CYTHON_UNUSED PyObject *__pyx_self,
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("hsl_to_rgb_c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hsl_hsl_to_rgb_c(__pyx_v_h, __pyx_v_s, __pyx_v_l, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hsl_hsl_to_rgb_c(__pyx_v_h, __pyx_v_s, __pyx_v_l, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1755,7 +1748,7 @@ static PyObject *__pyx_pf_3hsl_4hsl_to_rgb_c(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "hsl.pyx":96
+/* "hsl.pyx":102
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef rgb_to_hsl_c(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -1783,7 +1776,7 @@ static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double __pyx_v_r, double __pyx_v_g, d
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rgb_to_hsl_c", 0);
 
-  /* "hsl.pyx":100
+  /* "hsl.pyx":106
  *         double *hsl
  *         double h, s, l
  *     hsl = rgb_to_hsl(r, g, b)             # <<<<<<<<<<<<<<
@@ -1792,7 +1785,7 @@ static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double __pyx_v_r, double __pyx_v_g, d
  */
   __pyx_v_hsl = rgb_to_hsl(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
-  /* "hsl.pyx":101
+  /* "hsl.pyx":107
  *         double h, s, l
  *     hsl = rgb_to_hsl(r, g, b)
  *     h, s, l = hsl[0], hsl[1], hsl[2]             # <<<<<<<<<<<<<<
@@ -1806,7 +1799,7 @@ static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double __pyx_v_r, double __pyx_v_g, d
   __pyx_v_s = __pyx_t_2;
   __pyx_v_l = __pyx_t_3;
 
-  /* "hsl.pyx":102
+  /* "hsl.pyx":108
  *     hsl = rgb_to_hsl(r, g, b)
  *     h, s, l = hsl[0], hsl[1], hsl[2]
  *     free(hsl)             # <<<<<<<<<<<<<<
@@ -1815,7 +1808,7 @@ static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double __pyx_v_r, double __pyx_v_g, d
  */
   free(__pyx_v_hsl);
 
-  /* "hsl.pyx":103
+  /* "hsl.pyx":109
  *     h, s, l = hsl[0], hsl[1], hsl[2]
  *     free(hsl)
  *     return h, s, l             # <<<<<<<<<<<<<<
@@ -1823,13 +1816,13 @@ static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double __pyx_v_r, double __pyx_v_g, d
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_h); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_h); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_s); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_s); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_l); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_l); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -1844,7 +1837,7 @@ static PyObject *__pyx_f_3hsl_rgb_to_hsl_c(double __pyx_v_r, double __pyx_v_g, d
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "hsl.pyx":96
+  /* "hsl.pyx":102
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef rgb_to_hsl_c(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -1903,17 +1896,17 @@ static PyObject *__pyx_pw_3hsl_7rgb_to_hsl_c(PyObject *__pyx_self, PyObject *__p
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_g)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rgb_to_hsl_c", 1, 3, 3, 1); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rgb_to_hsl_c", 1, 3, 3, 1); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rgb_to_hsl_c", 1, 3, 3, 2); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rgb_to_hsl_c", 1, 3, 3, 2); __PYX_ERR(0, 102, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rgb_to_hsl_c") < 0)) __PYX_ERR(0, 96, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rgb_to_hsl_c") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1922,13 +1915,13 @@ static PyObject *__pyx_pw_3hsl_7rgb_to_hsl_c(PyObject *__pyx_self, PyObject *__p
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
-    __pyx_v_g = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_g == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
-    __pyx_v_b = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_b == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
+    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L3_error)
+    __pyx_v_g = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_g == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L3_error)
+    __pyx_v_b = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_b == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("rgb_to_hsl_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 96, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("rgb_to_hsl_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 102, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hsl.rgb_to_hsl_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1950,7 +1943,7 @@ static PyObject *__pyx_pf_3hsl_6rgb_to_hsl_c(CYTHON_UNUSED PyObject *__pyx_self,
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rgb_to_hsl_c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hsl_rgb_to_hsl_c(__pyx_v_r, __pyx_v_g, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hsl_rgb_to_hsl_c(__pyx_v_r, __pyx_v_g, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1967,7 +1960,7 @@ static PyObject *__pyx_pf_3hsl_6rgb_to_hsl_c(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "hsl.pyx":111
+/* "hsl.pyx":117
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef tuple struct_rgb_to_hsl_c(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -1989,7 +1982,7 @@ static PyObject *__pyx_f_3hsl_struct_rgb_to_hsl_c(double __pyx_v_r, double __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("struct_rgb_to_hsl_c", 0);
 
-  /* "hsl.pyx":113
+  /* "hsl.pyx":119
  * cpdef tuple struct_rgb_to_hsl_c(double r, double g, double b):
  *     cdef HSL hsl_
  *     hsl_ = struct_rgb_to_hsl(r, g, b)             # <<<<<<<<<<<<<<
@@ -1998,7 +1991,7 @@ static PyObject *__pyx_f_3hsl_struct_rgb_to_hsl_c(double __pyx_v_r, double __pyx
  */
   __pyx_v_hsl_ = struct_rgb_to_hsl(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
-  /* "hsl.pyx":114
+  /* "hsl.pyx":120
  *     cdef HSL hsl_
  *     hsl_ = struct_rgb_to_hsl(r, g, b)
  *     return hsl_.h, hsl_.s, hsl_.l             # <<<<<<<<<<<<<<
@@ -2006,13 +1999,13 @@ static PyObject *__pyx_f_3hsl_struct_rgb_to_hsl_c(double __pyx_v_r, double __pyx
  * # HOOK TO THE C VERSION (USING STRUCT)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_hsl_.h); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_hsl_.h); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_hsl_.s); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_hsl_.s); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_hsl_.l); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_hsl_.l); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -2027,7 +2020,7 @@ static PyObject *__pyx_f_3hsl_struct_rgb_to_hsl_c(double __pyx_v_r, double __pyx
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hsl.pyx":111
+  /* "hsl.pyx":117
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef tuple struct_rgb_to_hsl_c(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -2086,17 +2079,17 @@ static PyObject *__pyx_pw_3hsl_9struct_rgb_to_hsl_c(PyObject *__pyx_self, PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_g)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("struct_rgb_to_hsl_c", 1, 3, 3, 1); __PYX_ERR(0, 111, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("struct_rgb_to_hsl_c", 1, 3, 3, 1); __PYX_ERR(0, 117, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("struct_rgb_to_hsl_c", 1, 3, 3, 2); __PYX_ERR(0, 111, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("struct_rgb_to_hsl_c", 1, 3, 3, 2); __PYX_ERR(0, 117, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "struct_rgb_to_hsl_c") < 0)) __PYX_ERR(0, 111, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "struct_rgb_to_hsl_c") < 0)) __PYX_ERR(0, 117, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -2105,13 +2098,13 @@ static PyObject *__pyx_pw_3hsl_9struct_rgb_to_hsl_c(PyObject *__pyx_self, PyObje
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L3_error)
-    __pyx_v_g = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_g == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L3_error)
-    __pyx_v_b = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_b == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L3_error)
+    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L3_error)
+    __pyx_v_g = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_g == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L3_error)
+    __pyx_v_b = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_b == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("struct_rgb_to_hsl_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 111, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("struct_rgb_to_hsl_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 117, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hsl.struct_rgb_to_hsl_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2133,7 +2126,7 @@ static PyObject *__pyx_pf_3hsl_8struct_rgb_to_hsl_c(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("struct_rgb_to_hsl_c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hsl_struct_rgb_to_hsl_c(__pyx_v_r, __pyx_v_g, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hsl_struct_rgb_to_hsl_c(__pyx_v_r, __pyx_v_g, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2150,7 +2143,7 @@ static PyObject *__pyx_pf_3hsl_8struct_rgb_to_hsl_c(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "hsl.pyx":121
+/* "hsl.pyx":127
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef tuple struct_hsl_to_rgb_c(double h, double s, double l):             # <<<<<<<<<<<<<<
@@ -2172,7 +2165,7 @@ static PyObject *__pyx_f_3hsl_struct_hsl_to_rgb_c(double __pyx_v_h, double __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("struct_hsl_to_rgb_c", 0);
 
-  /* "hsl.pyx":123
+  /* "hsl.pyx":129
  * cpdef tuple struct_hsl_to_rgb_c(double h, double s, double l):
  *     cdef RGB rgb_
  *     rgb_ = struct_hsl_to_rgb(h, s, l)             # <<<<<<<<<<<<<<
@@ -2181,7 +2174,7 @@ static PyObject *__pyx_f_3hsl_struct_hsl_to_rgb_c(double __pyx_v_h, double __pyx
  */
   __pyx_v_rgb_ = struct_hsl_to_rgb(__pyx_v_h, __pyx_v_s, __pyx_v_l);
 
-  /* "hsl.pyx":124
+  /* "hsl.pyx":130
  *     cdef RGB rgb_
  *     rgb_ = struct_hsl_to_rgb(h, s, l)
  *     return rgb_.r, rgb_.g, rgb_.b             # <<<<<<<<<<<<<<
@@ -2189,13 +2182,13 @@ static PyObject *__pyx_f_3hsl_struct_hsl_to_rgb_c(double __pyx_v_h, double __pyx
  * # ----------------------------------------- SOURCE CODE ------------------------------------------------
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_rgb_.r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_rgb_.r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_rgb_.g); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_rgb_.g); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_rgb_.b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_rgb_.b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -2210,7 +2203,7 @@ static PyObject *__pyx_f_3hsl_struct_hsl_to_rgb_c(double __pyx_v_h, double __pyx
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hsl.pyx":121
+  /* "hsl.pyx":127
  * @cython.wraparound(False)
  * @cython.nonecheck(False)
  * cpdef tuple struct_hsl_to_rgb_c(double h, double s, double l):             # <<<<<<<<<<<<<<
@@ -2269,17 +2262,17 @@ static PyObject *__pyx_pw_3hsl_11struct_hsl_to_rgb_c(PyObject *__pyx_self, PyObj
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_s)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("struct_hsl_to_rgb_c", 1, 3, 3, 1); __PYX_ERR(0, 121, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("struct_hsl_to_rgb_c", 1, 3, 3, 1); __PYX_ERR(0, 127, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_l)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("struct_hsl_to_rgb_c", 1, 3, 3, 2); __PYX_ERR(0, 121, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("struct_hsl_to_rgb_c", 1, 3, 3, 2); __PYX_ERR(0, 127, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "struct_hsl_to_rgb_c") < 0)) __PYX_ERR(0, 121, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "struct_hsl_to_rgb_c") < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -2288,13 +2281,13 @@ static PyObject *__pyx_pw_3hsl_11struct_hsl_to_rgb_c(PyObject *__pyx_self, PyObj
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_h = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_h == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L3_error)
-    __pyx_v_s = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_s == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L3_error)
-    __pyx_v_l = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L3_error)
+    __pyx_v_h = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_h == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L3_error)
+    __pyx_v_s = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_s == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L3_error)
+    __pyx_v_l = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("struct_hsl_to_rgb_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 121, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("struct_hsl_to_rgb_c", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 127, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hsl.struct_hsl_to_rgb_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2316,7 +2309,7 @@ static PyObject *__pyx_pf_3hsl_10struct_hsl_to_rgb_c(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("struct_hsl_to_rgb_c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hsl_struct_hsl_to_rgb_c(__pyx_v_h, __pyx_v_s, __pyx_v_l, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hsl_struct_hsl_to_rgb_c(__pyx_v_h, __pyx_v_s, __pyx_v_l, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2333,7 +2326,7 @@ static PyObject *__pyx_pf_3hsl_10struct_hsl_to_rgb_c(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "hsl.pyx":137
+/* "hsl.pyx":143
  * @cython.nonecheck(False)
  * @cython.cdivision(True)
  * cdef inline double * rgb2hsl_c(double r, double g, double b)nogil:             # <<<<<<<<<<<<<<
@@ -2357,7 +2350,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   double *__pyx_r;
   int __pyx_t_1;
 
-  /* "hsl.pyx":156
+  /* "hsl.pyx":162
  *         double maxc, minc, l, s, rc, gc, bc, h
  *         double high, low, high_
  *         double *hsl = <double *> malloc(3 * sizeof(double))             # <<<<<<<<<<<<<<
@@ -2366,7 +2359,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_hsl = ((double *)malloc((3 * (sizeof(double)))));
 
-  /* "hsl.pyx":159
+  /* "hsl.pyx":165
  * 
  *     # SLOW DOWN
  *     maxc = fmax_rgb_value(r, g, b)             # <<<<<<<<<<<<<<
@@ -2375,7 +2368,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_maxc = fmax_rgb_value(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
-  /* "hsl.pyx":160
+  /* "hsl.pyx":166
  *     # SLOW DOWN
  *     maxc = fmax_rgb_value(r, g, b)
  *     minc = fmin_rgb_value(r, g, b)             # <<<<<<<<<<<<<<
@@ -2384,7 +2377,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_minc = fmin_rgb_value(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
-  /* "hsl.pyx":162
+  /* "hsl.pyx":168
  *     minc = fmin_rgb_value(r, g, b)
  * 
  *     high = maxc-minc             # <<<<<<<<<<<<<<
@@ -2393,7 +2386,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_high = (__pyx_v_maxc - __pyx_v_minc);
 
-  /* "hsl.pyx":163
+  /* "hsl.pyx":169
  * 
  *     high = maxc-minc
  *     high_ = 1.0 /high             # <<<<<<<<<<<<<<
@@ -2402,7 +2395,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_high_ = (1.0 / __pyx_v_high);
 
-  /* "hsl.pyx":164
+  /* "hsl.pyx":170
  *     high = maxc-minc
  *     high_ = 1.0 /high
  *     low = maxc+minc             # <<<<<<<<<<<<<<
@@ -2411,7 +2404,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_low = (__pyx_v_maxc + __pyx_v_minc);
 
-  /* "hsl.pyx":165
+  /* "hsl.pyx":171
  *     high_ = 1.0 /high
  *     low = maxc+minc
  *     l = (minc+maxc)* 0.5             # <<<<<<<<<<<<<<
@@ -2420,7 +2413,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_l = ((__pyx_v_minc + __pyx_v_maxc) * 0.5);
 
-  /* "hsl.pyx":167
+  /* "hsl.pyx":173
  *     l = (minc+maxc)* 0.5
  * 
  *     if minc == maxc:             # <<<<<<<<<<<<<<
@@ -2430,7 +2423,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   __pyx_t_1 = ((__pyx_v_minc == __pyx_v_maxc) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":168
+    /* "hsl.pyx":174
  * 
  *     if minc == maxc:
  *         hsl[0] = 0.0             # <<<<<<<<<<<<<<
@@ -2439,7 +2432,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     (__pyx_v_hsl[0]) = 0.0;
 
-    /* "hsl.pyx":169
+    /* "hsl.pyx":175
  *     if minc == maxc:
  *         hsl[0] = 0.0
  *         hsl[1] = 0.0             # <<<<<<<<<<<<<<
@@ -2448,7 +2441,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     (__pyx_v_hsl[1]) = 0.0;
 
-    /* "hsl.pyx":170
+    /* "hsl.pyx":176
  *         hsl[0] = 0.0
  *         hsl[1] = 0.0
  *         hsl[2] = l             # <<<<<<<<<<<<<<
@@ -2457,7 +2450,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     (__pyx_v_hsl[2]) = __pyx_v_l;
 
-    /* "hsl.pyx":171
+    /* "hsl.pyx":177
  *         hsl[1] = 0.0
  *         hsl[2] = l
  *         return hsl             # <<<<<<<<<<<<<<
@@ -2467,7 +2460,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
     __pyx_r = __pyx_v_hsl;
     goto __pyx_L0;
 
-    /* "hsl.pyx":167
+    /* "hsl.pyx":173
  *     l = (minc+maxc)* 0.5
  * 
  *     if minc == maxc:             # <<<<<<<<<<<<<<
@@ -2476,7 +2469,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   }
 
-  /* "hsl.pyx":173
+  /* "hsl.pyx":179
  *         return hsl
  * 
  *     if l <= 0.5:             # <<<<<<<<<<<<<<
@@ -2486,7 +2479,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   __pyx_t_1 = ((__pyx_v_l <= 0.5) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":174
+    /* "hsl.pyx":180
  * 
  *     if l <= 0.5:
  *         s = high / low             # <<<<<<<<<<<<<<
@@ -2495,7 +2488,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     __pyx_v_s = (__pyx_v_high / __pyx_v_low);
 
-    /* "hsl.pyx":173
+    /* "hsl.pyx":179
  *         return hsl
  * 
  *     if l <= 0.5:             # <<<<<<<<<<<<<<
@@ -2505,7 +2498,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
     goto __pyx_L4;
   }
 
-  /* "hsl.pyx":176
+  /* "hsl.pyx":182
  *         s = high / low
  *     else:
  *         s = high / (2.0-maxc-minc)             # <<<<<<<<<<<<<<
@@ -2517,7 +2510,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   }
   __pyx_L4:;
 
-  /* "hsl.pyx":178
+  /* "hsl.pyx":184
  *         s = high / (2.0-maxc-minc)
  * 
  *     rc = (maxc-r) * high_             # <<<<<<<<<<<<<<
@@ -2526,7 +2519,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_rc = ((__pyx_v_maxc - __pyx_v_r) * __pyx_v_high_);
 
-  /* "hsl.pyx":179
+  /* "hsl.pyx":185
  * 
  *     rc = (maxc-r) * high_
  *     gc = (maxc-g) * high_             # <<<<<<<<<<<<<<
@@ -2535,7 +2528,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_gc = ((__pyx_v_maxc - __pyx_v_g) * __pyx_v_high_);
 
-  /* "hsl.pyx":180
+  /* "hsl.pyx":186
  *     rc = (maxc-r) * high_
  *     gc = (maxc-g) * high_
  *     bc = (maxc-b) * high_             # <<<<<<<<<<<<<<
@@ -2544,7 +2537,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_bc = ((__pyx_v_maxc - __pyx_v_b) * __pyx_v_high_);
 
-  /* "hsl.pyx":182
+  /* "hsl.pyx":188
  *     bc = (maxc-b) * high_
  * 
  *     if r == maxc:             # <<<<<<<<<<<<<<
@@ -2554,7 +2547,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   __pyx_t_1 = ((__pyx_v_r == __pyx_v_maxc) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":183
+    /* "hsl.pyx":189
  * 
  *     if r == maxc:
  *         h = bc - gc             # <<<<<<<<<<<<<<
@@ -2563,7 +2556,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     __pyx_v_h = (__pyx_v_bc - __pyx_v_gc);
 
-    /* "hsl.pyx":182
+    /* "hsl.pyx":188
  *     bc = (maxc-b) * high_
  * 
  *     if r == maxc:             # <<<<<<<<<<<<<<
@@ -2573,7 +2566,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
     goto __pyx_L5;
   }
 
-  /* "hsl.pyx":184
+  /* "hsl.pyx":190
  *     if r == maxc:
  *         h = bc - gc
  *     elif g == maxc:             # <<<<<<<<<<<<<<
@@ -2583,7 +2576,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   __pyx_t_1 = ((__pyx_v_g == __pyx_v_maxc) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":185
+    /* "hsl.pyx":191
  *         h = bc - gc
  *     elif g == maxc:
  *         h = 2.0 + rc - bc             # <<<<<<<<<<<<<<
@@ -2592,7 +2585,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     __pyx_v_h = ((2.0 + __pyx_v_rc) - __pyx_v_bc);
 
-    /* "hsl.pyx":184
+    /* "hsl.pyx":190
  *     if r == maxc:
  *         h = bc - gc
  *     elif g == maxc:             # <<<<<<<<<<<<<<
@@ -2602,7 +2595,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
     goto __pyx_L5;
   }
 
-  /* "hsl.pyx":187
+  /* "hsl.pyx":193
  *         h = 2.0 + rc - bc
  *     else:
  *         h = 4.0 + gc - rc             # <<<<<<<<<<<<<<
@@ -2614,7 +2607,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   }
   __pyx_L5:;
 
-  /* "hsl.pyx":189
+  /* "hsl.pyx":195
  *         h = 4.0 + gc - rc
  * 
  *     h = h * ONE_SIXTH             # <<<<<<<<<<<<<<
@@ -2623,7 +2616,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   __pyx_v_h = (__pyx_v_h * 0.16666666666666666);
 
-  /* "hsl.pyx":190
+  /* "hsl.pyx":196
  * 
  *     h = h * ONE_SIXTH
  *     if h < 0:             # <<<<<<<<<<<<<<
@@ -2633,7 +2626,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   __pyx_t_1 = ((__pyx_v_h < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":191
+    /* "hsl.pyx":197
  *     h = h * ONE_SIXTH
  *     if h < 0:
  *         hsl[0] = 1.0 - (h * -1)             # <<<<<<<<<<<<<<
@@ -2642,7 +2635,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
     (__pyx_v_hsl[0]) = (1.0 - (__pyx_v_h * -1.0));
 
-    /* "hsl.pyx":190
+    /* "hsl.pyx":196
  * 
  *     h = h * ONE_SIXTH
  *     if h < 0:             # <<<<<<<<<<<<<<
@@ -2652,7 +2645,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
     goto __pyx_L6;
   }
 
-  /* "hsl.pyx":193
+  /* "hsl.pyx":199
  *         hsl[0] = 1.0 - (h * -1)
  *     else:
  *         hsl[0] = fmod(h, 1.0)             # <<<<<<<<<<<<<<
@@ -2664,7 +2657,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   }
   __pyx_L6:;
 
-  /* "hsl.pyx":195
+  /* "hsl.pyx":201
  *         hsl[0] = fmod(h, 1.0)
  * 
  *     hsl[1] = s             # <<<<<<<<<<<<<<
@@ -2673,7 +2666,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   (__pyx_v_hsl[1]) = __pyx_v_s;
 
-  /* "hsl.pyx":196
+  /* "hsl.pyx":202
  * 
  *     hsl[1] = s
  *     hsl[2] = l             # <<<<<<<<<<<<<<
@@ -2682,7 +2675,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
  */
   (__pyx_v_hsl[2]) = __pyx_v_l;
 
-  /* "hsl.pyx":197
+  /* "hsl.pyx":203
  *     hsl[1] = s
  *     hsl[2] = l
  *     return hsl             # <<<<<<<<<<<<<<
@@ -2692,7 +2685,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   __pyx_r = __pyx_v_hsl;
   goto __pyx_L0;
 
-  /* "hsl.pyx":137
+  /* "hsl.pyx":143
  * @cython.nonecheck(False)
  * @cython.cdivision(True)
  * cdef inline double * rgb2hsl_c(double r, double g, double b)nogil:             # <<<<<<<<<<<<<<
@@ -2705,7 +2698,7 @@ static CYTHON_INLINE double *__pyx_f_3hsl_rgb2hsl_c(double __pyx_v_r, double __p
   return __pyx_r;
 }
 
-/* "hsl.pyx":203
+/* "hsl.pyx":209
  * @cython.nonecheck(False)
  * @cython.cdivision(False)
  * cdef double * hsl2rgb_c(double h, double s, double l)nogil:             # <<<<<<<<<<<<<<
@@ -2720,7 +2713,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   double *__pyx_r;
   int __pyx_t_1;
 
-  /* "hsl.pyx":222
+  /* "hsl.pyx":228
  *     """
  *     cdef:
  *         double m1=0, m2=0             # <<<<<<<<<<<<<<
@@ -2730,7 +2723,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   __pyx_v_m1 = 0.0;
   __pyx_v_m2 = 0.0;
 
-  /* "hsl.pyx":223
+  /* "hsl.pyx":229
  *     cdef:
  *         double m1=0, m2=0
  *         double *rgb = <double *> malloc(3 * sizeof(double))             # <<<<<<<<<<<<<<
@@ -2739,7 +2732,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
   __pyx_v_rgb = ((double *)malloc((3 * (sizeof(double)))));
 
-  /* "hsl.pyx":225
+  /* "hsl.pyx":231
  *         double *rgb = <double *> malloc(3 * sizeof(double))
  * 
  *     if s == 0.0:             # <<<<<<<<<<<<<<
@@ -2749,7 +2742,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   __pyx_t_1 = ((__pyx_v_s == 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":226
+    /* "hsl.pyx":232
  * 
  *     if s == 0.0:
  *         rgb[0] = l             # <<<<<<<<<<<<<<
@@ -2758,7 +2751,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
     (__pyx_v_rgb[0]) = __pyx_v_l;
 
-    /* "hsl.pyx":227
+    /* "hsl.pyx":233
  *     if s == 0.0:
  *         rgb[0] = l
  *         rgb[1] = l             # <<<<<<<<<<<<<<
@@ -2767,7 +2760,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
     (__pyx_v_rgb[1]) = __pyx_v_l;
 
-    /* "hsl.pyx":228
+    /* "hsl.pyx":234
  *         rgb[0] = l
  *         rgb[1] = l
  *         rgb[2] = l             # <<<<<<<<<<<<<<
@@ -2776,7 +2769,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
     (__pyx_v_rgb[2]) = __pyx_v_l;
 
-    /* "hsl.pyx":229
+    /* "hsl.pyx":235
  *         rgb[1] = l
  *         rgb[2] = l
  *         return rgb             # <<<<<<<<<<<<<<
@@ -2786,7 +2779,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
     __pyx_r = __pyx_v_rgb;
     goto __pyx_L0;
 
-    /* "hsl.pyx":225
+    /* "hsl.pyx":231
  *         double *rgb = <double *> malloc(3 * sizeof(double))
  * 
  *     if s == 0.0:             # <<<<<<<<<<<<<<
@@ -2795,7 +2788,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
   }
 
-  /* "hsl.pyx":231
+  /* "hsl.pyx":237
  *         return rgb
  * 
  *     if l <= 0.5:             # <<<<<<<<<<<<<<
@@ -2805,7 +2798,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   __pyx_t_1 = ((__pyx_v_l <= 0.5) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":232
+    /* "hsl.pyx":238
  * 
  *     if l <= 0.5:
  *         m2 = l * (1.0 + s)             # <<<<<<<<<<<<<<
@@ -2814,7 +2807,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
     __pyx_v_m2 = (__pyx_v_l * (1.0 + __pyx_v_s));
 
-    /* "hsl.pyx":231
+    /* "hsl.pyx":237
  *         return rgb
  * 
  *     if l <= 0.5:             # <<<<<<<<<<<<<<
@@ -2824,7 +2817,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
     goto __pyx_L4;
   }
 
-  /* "hsl.pyx":234
+  /* "hsl.pyx":240
  *         m2 = l * (1.0 + s)
  *     else:
  *         m2 = l + s -(l * s)             # <<<<<<<<<<<<<<
@@ -2836,7 +2829,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   }
   __pyx_L4:;
 
-  /* "hsl.pyx":236
+  /* "hsl.pyx":242
  *         m2 = l + s -(l * s)
  * 
  *     m1 = 2.0 * l - m2             # <<<<<<<<<<<<<<
@@ -2845,7 +2838,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
   __pyx_v_m1 = ((2.0 * __pyx_v_l) - __pyx_v_m2);
 
-  /* "hsl.pyx":238
+  /* "hsl.pyx":244
  *     m1 = 2.0 * l - m2
  * 
  *     rgb[0] = _v(m1, m2, h + ONE_THIRD)             # <<<<<<<<<<<<<<
@@ -2854,7 +2847,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
   (__pyx_v_rgb[0]) = __pyx_f_3hsl__v(__pyx_v_m1, __pyx_v_m2, (__pyx_v_h + 0.3333333333333333));
 
-  /* "hsl.pyx":239
+  /* "hsl.pyx":245
  * 
  *     rgb[0] = _v(m1, m2, h + ONE_THIRD)
  *     rgb[1] = _v(m1, m2, h)             # <<<<<<<<<<<<<<
@@ -2863,7 +2856,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
   (__pyx_v_rgb[1]) = __pyx_f_3hsl__v(__pyx_v_m1, __pyx_v_m2, __pyx_v_h);
 
-  /* "hsl.pyx":240
+  /* "hsl.pyx":246
  *     rgb[0] = _v(m1, m2, h + ONE_THIRD)
  *     rgb[1] = _v(m1, m2, h)
  *     rgb[2] = _v(m1, m2, h - ONE_THIRD)             # <<<<<<<<<<<<<<
@@ -2872,7 +2865,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
  */
   (__pyx_v_rgb[2]) = __pyx_f_3hsl__v(__pyx_v_m1, __pyx_v_m2, (__pyx_v_h - 0.3333333333333333));
 
-  /* "hsl.pyx":241
+  /* "hsl.pyx":247
  *     rgb[1] = _v(m1, m2, h)
  *     rgb[2] = _v(m1, m2, h - ONE_THIRD)
  *     return rgb             # <<<<<<<<<<<<<<
@@ -2882,7 +2875,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   __pyx_r = __pyx_v_rgb;
   goto __pyx_L0;
 
-  /* "hsl.pyx":203
+  /* "hsl.pyx":209
  * @cython.nonecheck(False)
  * @cython.cdivision(False)
  * cdef double * hsl2rgb_c(double h, double s, double l)nogil:             # <<<<<<<<<<<<<<
@@ -2895,7 +2888,7 @@ static double *__pyx_f_3hsl_hsl2rgb_c(double __pyx_v_h, double __pyx_v_s, double
   return __pyx_r;
 }
 
-/* "hsl.pyx":249
+/* "hsl.pyx":255
  * @cython.nonecheck(False)
  * #@cython.cdivision(True) DO NOT USE C DIVISION with % modulo
  * cdef double _v(double m1, double m2, double h)nogil:             # <<<<<<<<<<<<<<
@@ -2907,7 +2900,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
   double __pyx_r;
   int __pyx_t_1;
 
-  /* "hsl.pyx":251
+  /* "hsl.pyx":257
  * cdef double _v(double m1, double m2, double h)nogil:
  * 
  *     h = h % 1.0             # <<<<<<<<<<<<<<
@@ -2916,7 +2909,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
  */
   __pyx_v_h = __Pyx_mod_double(__pyx_v_h, 1.0);
 
-  /* "hsl.pyx":252
+  /* "hsl.pyx":258
  * 
  *     h = h % 1.0
  *     if h < ONE_SIXTH:             # <<<<<<<<<<<<<<
@@ -2926,7 +2919,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
   __pyx_t_1 = ((__pyx_v_h < 0.16666666666666666) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":253
+    /* "hsl.pyx":259
  *     h = h % 1.0
  *     if h < ONE_SIXTH:
  *         return m1 + (m2 - m1) * h * 6.0             # <<<<<<<<<<<<<<
@@ -2936,7 +2929,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
     __pyx_r = (__pyx_v_m1 + (((__pyx_v_m2 - __pyx_v_m1) * __pyx_v_h) * 6.0));
     goto __pyx_L0;
 
-    /* "hsl.pyx":252
+    /* "hsl.pyx":258
  * 
  *     h = h % 1.0
  *     if h < ONE_SIXTH:             # <<<<<<<<<<<<<<
@@ -2945,7 +2938,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
  */
   }
 
-  /* "hsl.pyx":254
+  /* "hsl.pyx":260
  *     if h < ONE_SIXTH:
  *         return m1 + (m2 - m1) * h * 6.0
  *     if h < 0.5:             # <<<<<<<<<<<<<<
@@ -2955,7 +2948,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
   __pyx_t_1 = ((__pyx_v_h < 0.5) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":255
+    /* "hsl.pyx":261
  *         return m1 + (m2 - m1) * h * 6.0
  *     if h < 0.5:
  *         return m2             # <<<<<<<<<<<<<<
@@ -2965,7 +2958,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
     __pyx_r = __pyx_v_m2;
     goto __pyx_L0;
 
-    /* "hsl.pyx":254
+    /* "hsl.pyx":260
  *     if h < ONE_SIXTH:
  *         return m1 + (m2 - m1) * h * 6.0
  *     if h < 0.5:             # <<<<<<<<<<<<<<
@@ -2974,7 +2967,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
  */
   }
 
-  /* "hsl.pyx":256
+  /* "hsl.pyx":262
  *     if h < 0.5:
  *         return m2
  *     if h < TWO_THIRD:             # <<<<<<<<<<<<<<
@@ -2984,7 +2977,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
   __pyx_t_1 = ((__pyx_v_h < 0.6666666666666666) != 0);
   if (__pyx_t_1) {
 
-    /* "hsl.pyx":257
+    /* "hsl.pyx":263
  *         return m2
  *     if h < TWO_THIRD:
  *         return m1 + (m2 - m1) * (TWO_THIRD - h) * 6.0             # <<<<<<<<<<<<<<
@@ -2994,7 +2987,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
     __pyx_r = (__pyx_v_m1 + (((__pyx_v_m2 - __pyx_v_m1) * (0.6666666666666666 - __pyx_v_h)) * 6.0));
     goto __pyx_L0;
 
-    /* "hsl.pyx":256
+    /* "hsl.pyx":262
  *     if h < 0.5:
  *         return m2
  *     if h < TWO_THIRD:             # <<<<<<<<<<<<<<
@@ -3003,7 +2996,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
  */
   }
 
-  /* "hsl.pyx":258
+  /* "hsl.pyx":264
  *     if h < TWO_THIRD:
  *         return m1 + (m2 - m1) * (TWO_THIRD - h) * 6.0
  *     return m1             # <<<<<<<<<<<<<<
@@ -3012,7 +3005,7 @@ static double __pyx_f_3hsl__v(double __pyx_v_m1, double __pyx_v_m2, double __pyx
   __pyx_r = __pyx_v_m1;
   goto __pyx_L0;
 
-  /* "hsl.pyx":249
+  /* "hsl.pyx":255
  * @cython.nonecheck(False)
  * #@cython.cdivision(True) DO NOT USE C DIVISION with % modulo
  * cdef double _v(double m1, double m2, double h)nogil:             # <<<<<<<<<<<<<<
@@ -3078,17 +3071,13 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
-  {&__pyx_n_s_SystemExit, __pyx_k_SystemExit, sizeof(__pyx_k_SystemExit), 0, 0, 1, 1},
   {&__pyx_n_s_b, __pyx_k_b, sizeof(__pyx_k_b), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
-  {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_g, __pyx_k_g, sizeof(__pyx_k_g), 0, 0, 1, 1},
   {&__pyx_n_s_h, __pyx_k_h, sizeof(__pyx_k_h), 0, 0, 1, 1},
   {&__pyx_n_s_l, __pyx_k_l, sizeof(__pyx_k_l), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_r, __pyx_k_r, sizeof(__pyx_k_r), 0, 0, 1, 1},
   {&__pyx_n_s_s, __pyx_k_s, sizeof(__pyx_k_s), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
@@ -3096,7 +3085,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(0, 7, __pyx_L1_error)
-  __pyx_builtin_SystemExit = __Pyx_GetBuiltinName(__pyx_n_s_SystemExit); if (!__pyx_builtin_SystemExit) __PYX_ERR(0, 10, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3149,10 +3137,18 @@ static int __Pyx_modinit_variable_export_code(void) {
 
 static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("rgb2hsl_c", (void (*)(void))__pyx_f_3hsl_rgb2hsl_c, "double *(double, double, double)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("hsl2rgb_c", (void (*)(void))__pyx_f_3hsl_hsl2rgb_c, "double *(double, double, double)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_type_init_code(void) {
@@ -3382,7 +3378,7 @@ if (!__Pyx_RefNanny) {
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
   (void)__Pyx_modinit_variable_export_code();
-  (void)__Pyx_modinit_function_export_code();
+  if (unlikely(__Pyx_modinit_function_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
   (void)__Pyx_modinit_variable_import_code();
@@ -3408,7 +3404,7 @@ if (!__Pyx_RefNanny) {
  *     cimport cython
  *     from cython.parallel cimport prange             # <<<<<<<<<<<<<<
  * except ImportError:
- *     print("\n<cython> library is missing on your system."
+ *     raise("\n<cython> library is missing on your system."
  */
     }
   }
@@ -3898,149 +3894,6 @@ bad:
     Py_XDECREF(py_code);
     Py_XDECREF(py_frame);
 }
-
-/* Print */
-#if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static PyObject *__Pyx_GetStdout(void) {
-    PyObject *f = PySys_GetObject((char *)"stdout");
-    if (!f) {
-        PyErr_SetString(PyExc_RuntimeError, "lost sys.stdout");
-    }
-    return f;
-}
-static int __Pyx_Print(PyObject* f, PyObject *arg_tuple, int newline) {
-    int i;
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    for (i=0; i < PyTuple_GET_SIZE(arg_tuple); i++) {
-        PyObject* v;
-        if (PyFile_SoftSpace(f, 1)) {
-            if (PyFile_WriteString(" ", f) < 0)
-                goto error;
-        }
-        v = PyTuple_GET_ITEM(arg_tuple, i);
-        if (PyFile_WriteObject(v, f, Py_PRINT_RAW) < 0)
-            goto error;
-        if (PyString_Check(v)) {
-            char *s = PyString_AsString(v);
-            Py_ssize_t len = PyString_Size(v);
-            if (len > 0) {
-                switch (s[len-1]) {
-                    case ' ': break;
-                    case '\f': case '\r': case '\n': case '\t': case '\v':
-                        PyFile_SoftSpace(f, 0);
-                        break;
-                    default:  break;
-                }
-            }
-        }
-    }
-    if (newline) {
-        if (PyFile_WriteString("\n", f) < 0)
-            goto error;
-        PyFile_SoftSpace(f, 0);
-    }
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-}
-#else
-static int __Pyx_Print(PyObject* stream, PyObject *arg_tuple, int newline) {
-    PyObject* kwargs = 0;
-    PyObject* result = 0;
-    PyObject* end_string;
-    if (unlikely(!__pyx_print)) {
-        __pyx_print = PyObject_GetAttr(__pyx_b, __pyx_n_s_print);
-        if (!__pyx_print)
-            return -1;
-    }
-    if (stream) {
-        kwargs = PyDict_New();
-        if (unlikely(!kwargs))
-            return -1;
-        if (unlikely(PyDict_SetItem(kwargs, __pyx_n_s_file, stream) < 0))
-            goto bad;
-        if (!newline) {
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                goto bad;
-            if (PyDict_SetItem(kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                goto bad;
-            }
-            Py_DECREF(end_string);
-        }
-    } else if (!newline) {
-        if (unlikely(!__pyx_print_kwargs)) {
-            __pyx_print_kwargs = PyDict_New();
-            if (unlikely(!__pyx_print_kwargs))
-                return -1;
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                return -1;
-            if (PyDict_SetItem(__pyx_print_kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                return -1;
-            }
-            Py_DECREF(end_string);
-        }
-        kwargs = __pyx_print_kwargs;
-    }
-    result = PyObject_Call(__pyx_print, arg_tuple, kwargs);
-    if (unlikely(kwargs) && (kwargs != __pyx_print_kwargs))
-        Py_DECREF(kwargs);
-    if (!result)
-        return -1;
-    Py_DECREF(result);
-    return 0;
-bad:
-    if (kwargs != __pyx_print_kwargs)
-        Py_XDECREF(kwargs);
-    return -1;
-}
-#endif
-
-/* PrintOne */
-#if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    if (PyFile_SoftSpace(f, 0)) {
-        if (PyFile_WriteString(" ", f) < 0)
-            goto error;
-    }
-    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
-        goto error;
-    if (PyFile_WriteString("\n", f) < 0)
-        goto error;
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-    /* the line below is just to avoid C compiler
-     * warnings about unused functions */
-    return __Pyx_Print(f, NULL, 0);
-}
-#else
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
-    int res;
-    PyObject* arg_tuple = PyTuple_Pack(1, o);
-    if (unlikely(!arg_tuple))
-        return -1;
-    res = __Pyx_Print(stream, arg_tuple, 1);
-    Py_DECREF(arg_tuple);
-    return res;
-}
-#endif
 
 /* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
@@ -4587,6 +4440,43 @@ static int __Pyx_check_binary_version(void) {
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
+}
+
+/* FunctionExport */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
+    }
+    tmp.fp = f;
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(tmp.p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(tmp.p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 /* InitStrings */
