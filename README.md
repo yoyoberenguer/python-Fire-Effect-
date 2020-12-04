@@ -4,6 +4,8 @@ Compatible with pygame version 2.0
 
 ![alt text](https://github.com/yoyoberenguer/python-Fire-Effect-/blob/main/screenshot101.png)
 
+![alt text](https://github.com/yoyoberenguer/python-Fire-Effect-/blob/main/screenshot102.png)
+
 
 ## New version
 ```
