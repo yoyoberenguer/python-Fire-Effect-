@@ -10,6 +10,13 @@ Compatible with pygame version 2.0
 Install the program using FireEffect.exe
 ```
 
+## Keys
+```
+HUE : up/down
+SATURATION: + / -
+LUMINESCENCE : Left/right
+```
+
 ## REQUIREMENT:
 ```
 pip install pygame cython numpy==1.19.3
